@@ -1,0 +1,68 @@
+extends layout
+
+block content
+    link(href='/public/froala_editor_3.0.6/css/froala_editor.pkgd.min.css', rel='stylesheet', type='text/css')
+    script(type='text/javascript', src='/public/froala_editor_3.0.6/js/froala_editor.pkgd.min.js')
+    body
+        div.container
+            .jumbotron.text-center
+                h1.display-3.text-center= data.title
+                br
+                a.button.btn.btn-secondary.float-left(href='/', style='margin-right:20px;')  
+                    i.fa.fa-home
+                a.button.btn.btn-secondary.float-left(href=back, style='margin-right:20px;') < Back to articles
+                    i.fa.fa-
+                if user == data.author
+                    a.button.btn.float-left(href=`/edit/${data.id}`, style='margin-right:20px;')
+                        i.fa.fa-pencil
+                    a.button.btn.float-left.text-danger(href=`/delete/${data.id}`, style='margin-right:20px;', onclick="return confirm('Do you confirm to delete this article?')")
+                        i.fa.fa-trash
+                p.float-right= `Written at: ${data.date_established}`
+            br
+            blockquote.blockquote
+                p.mb-0!= data.content
+                footer.blockquote-footer= data.author
+            br
+            if loggedIn
+                h5 Write a comment:
+                br
+                form#content-form(action='', method='post' class="form-registration")
+                    .form-group.col-md-12
+                        textarea#comment(rows="12", cols="135", name="comment", placeholder="Write your comment here", required)
+                        input#title(type='hidden', name='title', value=data.title)
+                    button.btn.btn-primary.float-right(type='submit') Submit 
+                        i.fa.fa-share-square-o
+            br
+            br
+            h5 Comments:
+            br
+            if commentdata.length
+                each comment in commentdata
+                    if comment.author == user
+                        .card.border-secondary.mb-3
+                            div.container
+                                .card-body
+                                    .text-secondary
+                                        p.card-title= `${comment.author}:`
+                                    .text-dark
+                                        p.card-title!= comment.comment
+                                    a.btn.float-right.text-danger(href=`/commentdelete/${comment.comment_id}`, onclick="return confirm('Do you confirm to delete this comment?')")
+                                        i.fa.fa-trash
+                                    
+                    else
+                        .card.border-secondary.mb-3
+                            div.container
+                                .card-body
+                                    .text-secondary
+                                        p.card-title= `${comment.author}:`
+                                    .text-dark
+                                        p.card-title!= comment.comment
+            else
+                p No comment
+            br
+            br
+            br
+            script.
+                let summary = new FroalaEditor('textarea#comment', {
+                    placeholderText: 'Write your comment here.'
+                })

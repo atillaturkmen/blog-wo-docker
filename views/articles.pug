@@ -1,0 +1,139 @@
+extends layout
+
+block content
+    body
+        div.container
+            br
+            h1 BLOG
+            if loggedIn
+                a.btn.btn-warning.float-right(href="/logout") Log out 
+                    i.fa.fa-sign-out
+                a.btn.float-left.text-primary(href='/add', style='margin-right:200px;') Write something 
+                    i.fa.fa-plus-circle
+                form#registration-form.form-inline(action='', method='post' class="form-registration")
+                    input#search.form-control.col-md-6(type="search", placeholder="Search for an article or author", name="search", style="margin-right:15px;")
+                    button.btn.btn-outline-info(type="submit")
+                        i.fa.fa-search
+            else
+                a.btn.btn-primary.float-right(href="/login") Log in 
+                    i.fa.fa-sign-in
+                form#registration-form.form-inline.justify-content-center(action='', method='post' class="form-registration")
+                    input#search.form-control.col-md-6(type="search", placeholder="Search for an article or author", name="search", style="margin-right:15px;")
+                    button.btn.btn-outline-info(type="submit")
+                        i.fa.fa-search
+            br
+            if data.length
+                each article in data
+                    if article.author == user
+                            .card.border-info.mb-3
+                                .card-body
+                                    .text-center
+                                        .text-info
+                                            h5.card-title.display-4= article.title
+                                        br
+                                        .text-dark
+                                            h5.card-text!= article.summary
+                                        br
+                                        .text-secondary
+                                            p.card-text= `Author: ${article.author}`
+                                        .text-secondary
+                                            p.card-text= `Last Updated: ${article.before}`
+                                        br
+                                        a.btn.btn-secondary(href=`/read/${article.id}`) Continue reading 
+                                            i.fa.fa-book
+                                        a.btn.float-right.text-danger(href=`/delete/${article.id}`, onclick="return confirm('Do you confirm to delete this article?')")
+                                            i.fa.fa-trash
+                            br
+                    else 
+                        .card.border-info.mb-3
+                                .card-body
+                                    .text-center
+                                        .text-info
+                                            h5.card-title.display-4= article.title
+                                        br
+                                        .text-dark
+                                            h5.card-text!= article.summary
+                                        br
+                                        .text-secondary
+                                            p.card-text= `Author: ${article.author}`
+                                        .text-secondary
+                                            p.card-text= `Last Updated: ${article.before}`
+                                        br
+                                        a.btn.btn-secondary(href=`/read/${article.id}`) Continue reading 
+                                            i.fa.fa-book
+                        br
+                if maxPageCount == 1
+                    br
+                else if maxPageCount == 2
+                    ul.pagination.justify-content-center
+                        if currentPage == 1
+                            li.page-item.disabled
+                                a.page-link(tabindex='-1', aria-disabled='true') 
+                                    i.fa.fa-angle-double-left
+                            li.page-item.active(aria-current='page')
+                                a.page-link() 1
+                            li.page-item
+                                a.page-link(href='/articles/2') 2 
+                            li.page-item
+                                a.page-link(href='/articles/2')
+                                    i.fa.fa-angle-double-right
+                        else
+                            li.page-item
+                                a.page-link(href='/articles/1', tabindex='-1')
+                                    i.fa.fa-angle-double-left
+                            li.page-item
+                                a.page-link(href='/articles/1') 1
+                            li.page-item.active(aria-current='page')
+                                a.page-link(aria-disabled='true') 2
+                            li.page-item.disabled
+                                a.page-link()
+                                    i.fa.fa-angle-double-right
+                else
+                    ul.pagination.justify-content-center
+                        if currentPage == 1
+                            li.page-item.disabled
+                                a.page-link
+                                    i.fa.fa-angle-double-left
+                            each num in [+currentPage, +currentPage + 1, +currentPage + 2]
+                                if currentPage == num
+                                    li.page-item.active(aria-current='page')
+                                        a.page-link()= num
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/articles/${+num}`)= num
+                            li.page-item
+                                a.page-link(href=`/articles/${+maxPageCount}`)
+                                    i.fa.fa-angle-double-right
+                        else if currentPage == maxPageCount
+                            li.page-item
+                                a.page-link(href=`/articles/1`)
+                                    i.fa.fa-angle-double-left
+                            each num in [currentPage - 2, +currentPage - 1, +currentPage]
+                                if currentPage == num
+                                    li.page-item.active(aria-current='page')
+                                        a.page-link()= num
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/articles/${+num}`)= num
+                            li.page-item.disabled
+                                a.page-link()
+                                    i.fa.fa-angle-double-right
+                        else
+                            li.page-item
+                                a.page-link(href=`/articles/1`)
+                                    i.fa.fa-angle-double-left
+                            each num in [+currentPage - 1, +currentPage, +currentPage + 1]
+                                if currentPage == num
+                                    li.page-item.active(aria-current='page')
+                                        a.page-link()= num
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/articles/${+num}`)= num
+                            li.page-item
+                                a.page-link(href=`/articles/${+maxPageCount}`)
+                                    i.fa.fa-angle-double-right
+                    
+
+            else
+                br
+                p No contribitions yet :(

@@ -1,0 +1,34 @@
+extends layout
+
+block content
+        link(href='/public/froala_editor_3.0.6/css/froala_editor.pkgd.min.css', rel='stylesheet', type='text/css')
+        script(type='text/javascript', src='/public/froala_editor_3.0.6/js/froala_editor.pkgd.min.js')
+        body
+            div.container
+                br
+                a.btn.btn-warning.float-right(href="/logout") Log out 
+                    i.fa.fa-sign-out
+                a.btn.btn-primary.float-left(href="/", style='margin-right:20px;') 
+                    i.fa.fa-home
+                a.btn.btn-secondary.float-left(href=`/read/${data.id}`) < Back to reading 
+                    i.fa.fa-book
+                br
+                br
+                h3.text-center Edit
+                br
+                form#content-form(action='', method='post' class="form-registration")
+                    .form-row
+                    .form-group.col-md-12
+                        input#title.form-control(type="text", name="title", value= data.title, autocomplete= "off", required)
+                        br
+                        textarea#summary(contenteditable='', rows="4", cols="135", name="summary", required)= data.summary
+                        br
+                        textarea#content(contenteditable='', rows="12", cols="135", name="content", required)= data.content
+                            
+                    button.btn.btn-primary.float-right(type='submit') Submit 
+                        i.fa.fa-share-square-o
+                br
+                br
+                script.
+                    let summary = new FroalaEditor('textarea#summary')
+                    let content = new FroalaEditor("textarea#content")

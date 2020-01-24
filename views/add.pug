@@ -1,0 +1,35 @@
+extends layout
+
+block content
+        link(href='/public/froala_editor_3.0.6/css/froala_editor.pkgd.min.css', rel='stylesheet', type='text/css')
+        script(type='text/javascript', src='/public/froala_editor_3.0.6/js/froala_editor.pkgd.min.js')
+        body
+            div.container
+                br
+                a.btn.btn-warning.float-right(href="/logout") Log out 
+                    i.fa.fa-sign-out
+                a.btn.btn-primary.float-left(href="/", style='margin-right:40px;') 
+                    i.fa.fa-home
+                h3 Write something:
+                br
+                form#content-form(action='', method='post' class="form-registration")
+
+                    .form-group.col-md-12
+                        input#title.form-control(type="text", name="title", placeholder="Title of your article", autocomplete= "off", required)
+                        br
+                        textarea#summary(rows="4", cols="135", name="summary", placeholder="Summary of your article", required)
+                        //#summary(rows="12", cols="135", name="content", placeholder="Write here", required)
+                        br
+                        textarea#content(rows="12", cols="135", name="content", placeholder="Write here", required)
+                    button.btn.btn-primary.float-right(type='submit') Submit 
+                        i.fa.fa-share-square-o
+                    br
+                    br
+
+                script.
+                    let summary = new FroalaEditor('textarea#summary', {
+                        placeholderText: 'Summary of your article'
+                    })
+                    let content = new FroalaEditor("textarea#content", {
+                        placeholderText: 'Write here'
+                    })

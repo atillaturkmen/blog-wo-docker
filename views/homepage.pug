@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+  body
+    div.container
+      br
+      h1.text-center BLOG
+      br
+      .text-center
+        a.btn-primary.btn(href='/') 
+          i.fa.fa-home
+      br
+      form#registration-form(action='', method='post' class="form-registration")
+        .form.row.justify-content-center
+          .form-group.col-md-4
+            input#username.form-control(type="text", name="username", placeholder="user name", required)
+            br
+            input#password.form-control(type='password', name='password', placeholder='password', required)
+            br
+            .text-center
+              button.btn.btn-primary(type='submit', style='margin-right:20px;') Sign in 
+                i.fa.fa-sign-in
+              a.btn.btn-primary(href='/registration') Sign up 
+                i.fa.fa-user-plus
+              br
+              br

@@ -1,0 +1,82 @@
+extends layout
+
+block content
+    body
+        div.container
+            br
+            h1 Search Results
+            if !loggedIn
+                a.btn.btn-primary.float-left(href="/", style="margin-right:20px;") 
+                    i.fa.fa-home
+                a.btn.btn-primary.float-right(href="/login") Log in 
+                    i.fa.fa-sign-in
+                form#registration-form.form-inline.justify-content-center(action='', method='post' class="form-registration")
+                    input#search.form-control.col-md-6(type="search", placeholder="Search for an article or author", name="search", style="margin-right:15px;")
+                    button.btn.btn-outline-info(type="submit")
+                        i.fa.fa-search
+            else
+                a.btn.btn-primary.float-left(href="/", style="margin-right:20px;") 
+                    i.fa.fa-home
+                a.btn.btn-warning.float-right(href="/logout") Log out 
+                    i.fa.fa-sign-out
+                a.btn.float-left.text-primary(href='/add', style='margin-right:150px;') Write something 
+                    i.fa.fa-plus-circle
+                form#registration-form.form-inline(action='', method='post' class="form-registration")
+                    input#search.form-control.col-md-6(type="search", placeholder="Search for an article or author", name="search", style="margin-right:15px;")
+                    button.btn.btn-outline-info(type="submit")
+                        i.fa.fa-search
+            //- a.btn.btn-primary.float-left(href="/", style="margin-right:20px;") 
+            //-     i.fa.fa-home
+            //- a.btn.btn-warning.float-right(href="/logout") Log out 
+            //-     i.fa.fa-sign-out
+            //- a.btn.float-left.text-primary(href='/add', style='margin-right:200px;') Write something 
+            //-     i.fa.fa-plus-circle
+            //- form#registration-form.form-inline(action='', method='post' class="form-registration")
+            //-     input#search.form-control.col-md-6(type="search", value=keyword, name="search", style="margin-right:15px;")
+            //-     button.btn.btn-outline-info(type="submit")
+            //-         i.fa.fa-search
+            br
+            if data.length
+                each article in data
+                    if article.author == user
+                            .card.border-info.mb-3
+                                .card-body
+                                    .text-center
+                                        .text-info
+                                            h5.card-title.display-4= article.title
+                                        br
+                                        .text-dark
+                                            h5.card-text!= article.summary
+                                        br
+                                        .text-secondary
+                                            p.card-text= `Author: ${article.author}`
+                                        .text-secondary
+                                            p.card-text= `Last Updated: ${article.before}`
+                                        br
+                                        a.btn.btn-secondary(href=`/read/${article.id}`) Continue reading 
+                                            i.fa.fa-book
+                                        a.btn.float-right.text-danger(href=`/delete/${article.id}`, onclick="return confirm('Do you confirm to delete this article?')")
+                                            i.fa.fa-trash
+                            br
+                    else 
+                        .card.border-info.mb-3
+                                .card-body
+                                    .text-center
+                                        .text-info
+                                            h5.card-title.display-4= article.title
+                                        br
+                                        .text-dark
+                                            h5.card-text!= article.summary
+                                        br
+                                        .text-secondary
+                                            p.card-text= `Author: ${article.author}`
+                                        .text-secondary
+                                            p.card-text= `Last Updated: ${article.before}`
+                                        br
+                                        a.btn.btn-secondary(href=`/read/${article.id}`) Continue reading 
+                                            i.fa.fa-book
+                        br
+
+            else
+                br
+                .alert.alert-dark.text-center(role='alert')= `No results were found for ${keyword}`

@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    body
+        div.container
+            br
+            .text-center
+                h1 Sign up
+                br
+                a.badge.badge-primary(href='/') < Back to sign in
+                br
+                br
+                .row.justify-content-center
+                    .alert.alert-warning.col-md-4.text-center(role='alert') This username is in use. Please choose another one.
+            if errors
+                .alert.alert-warning(role='alert')= errors[0].msg
+            form#registration-form(action='', method='post' class="form-registration", onsubmit="check()")
+                .form.row.justify-content-center
+                    .form-group.col-md-4
+                        input#newusername.form-control(type="text", name="newusername", placeholder="user name", required)
+                        br
+                        input#newpassword.form-control(type='password', name='newpassword', placeholder='password', title="Password must be at least 6 characters long and contain a letter and a number", pattern="(?=.*[0-9])(?=.*[a-z]).{6,}", required)
+                        br
+                .text-center
+                    button.btn.btn-primary(type='submit') Register 
+                        i.fa.fa-send
+            br
+            br

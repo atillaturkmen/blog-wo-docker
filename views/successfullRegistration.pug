@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    body
+        div.container
+            br
+            br
+            br
+            br
+            .alert.alert-success(role='alert') Registration is succesful. You will be redirected in 3 seconds.
+                br
+                br
+                a.alert-link(href='/login')  < Click here if you feel impatient.
+            script.
+                setTimeout(function(){
+                window.location.href = '/login';
+                }, 3000);
